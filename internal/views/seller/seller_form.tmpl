@@ -1,0 +1,42 @@
+{{ define "title" }}{{ if eq .Mode "edit" }}Edit Product{{ else }}New Product{{ end }}{{ end }}
+{{ template "base" . }}
+{{ define "content" }}
+<h1 class="text-2xl font-bold mb-4">
+  {{ if eq .Mode "edit" }}Edit Product{{ else }}New Product{{ end }}
+</h1>
+
+{{ $f := .Form }}
+
+<form method="POST" enctype="multipart/form-data"
+      action="{{ if eq .Mode "edit" }}/seller/products/{{ .Item.ID }}{{ else }}/seller/products{{ end }}"
+      class="space-y-3 max-w-md">
+
+  <input name="title" required placeholder="Title" class="w-full border p-2 rounded"
+         value="{{ if $f }}{{ $f.Title }}{{ else }}{{ if .Item }}{{ .Item.Title }}{{ end }}{{ end }}">
+
+  <textarea name="description" placeholder="Description" class="w-full border p-2 rounded">{{ if $f }}{{ $f.Description }}{{ else }}{{ if .Item }}{{ .Item.Description }}{{ end }}{{ end }}</textarea>
+
+  <input name="price" required placeholder="Price, e.g. 199.99" class="w-full border p-2 rounded"
+         value="{{ if $f }}{{ $f.Price }}{{ else }}{{ if .Item }}{{ price .Item.PriceCents }}{{ end }}{{ end }}">
+
+  <input name="stock" required type="number" min="0" class="w-full border p-2 rounded"
+         value="{{ if $f }}{{ $f.Stock }}{{ else }}{{ if .Item }}{{ .Item.Stock }}{{ end }}{{ end }}">
+
+  <!-- ✅ пояснение и инпут для картинки -->
+  <div class="text-sm text-gray-500">Choose product image (optional)</div>
+  <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" class="w-full border p-2 rounded">
+
+  {{ if and .Item .Item.ImagePath }}
+    <div class="text-sm text-gray-600">Current image:</div>
+    <img src="{{ .Item.ImagePath }}" alt="{{ .Item.Title }}" class="w-full h-40 object-cover rounded mb-2">
+  {{ end }}
+
+  <button class="px-4 py-2 bg-green-600 text-white rounded">
+    {{ if eq .Mode "edit" }}Save{{ else }}Create{{ end }}
+  </button>
+</form>
+
+{{ if .Error }}
+  <p class="text-red-600 mt-3">{{ .Error }}</p>
+{{ end }}
+{{ end }}

@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: mp_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mp_user
+      POSTGRES_PASSWORD: mp_pass
+      POSTGRES_DB: mp_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - mp_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mp_user -d mp_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mp_pgdata:

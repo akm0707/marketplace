@@ -1,0 +1,28 @@
+{{ define "title" }}Catalog{{ end }}
+{{ template "base" . }}
+{{ define "content" }}
+<h1 class="text-2xl font-bold mb-4">Catalog</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {{ range .Items }}
+  <div class="bg-white p-4 rounded shadow">
+    {{ if .ImagePath }}
+      <img src="{{ .ImagePath }}" alt="{{ .Title }}" class="mb-2 w-full h-40 object-cover rounded">
+    {{ end }}
+    <h2 class="font-semibold text-lg">{{ .Title }}</h2>
+    <p class="text-sm text-gray-600 mb-2">{{ .Description }}</p>
+    <div class="flex justify-between items-center">
+      <span class="font-bold">$ {{ price .PriceCents }}</span>
+      <span class="text-sm">Stock: {{ .Stock }}</span>
+    </div>
+    <form method="POST" action="/cart/add" class="mt-3 flex items-center gap-2">
+      <input type="hidden" name="product_id" value="{{ .ID }}">
+      <input type="number" name="qty" min="1" value="1" class="w-20 border p-2 rounded">
+      <button class="px-3 py-2 bg-emerald-600 text-white rounded">Add to cart</button>
+    </form>
+  </div>
+  {{ else }}
+  <p>No products yet.</p>
+  {{ end }}
+</div>
+{{ end }}

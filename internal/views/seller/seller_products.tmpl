@@ -1,0 +1,31 @@
+{{ define "title" }}My Products{{ end }}
+{{ template "base" . }}
+{{ define "content" }}
+<h1 class="text-2xl font-bold mb-4">My Products</h1>
+
+<a href="/seller/products/new" class="inline-block mb-4 px-3 py-2 bg-blue-600 text-white rounded">Add product</a>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  {{ range .Items }}
+  <div class="bg-white p-4 rounded shadow">
+    {{ if .ImagePath }}
+      <img src="{{ .ImagePath }}" alt="{{ .Title }}" class="mb-2 w-full h-40 object-cover rounded">
+    {{ end }}
+    <h2 class="font-semibold text-lg">{{ .Title }}</h2>
+    <p class="text-sm text-gray-600 mb-2">{{ .Description }}</p>
+    <div class="flex justify-between items-center mb-3">
+      <span class="font-bold">$ {{ price .PriceCents }}</span>
+      <span class="text-sm">Stock: {{ .Stock }}</span>
+    </div>
+    <div class="flex gap-2">
+      <a href="/seller/products/{{ .ID }}/edit" class="px-3 py-2 bg-yellow-500 text-white rounded">Edit</a>
+      <form method="POST" action="/seller/products/{{ .ID }}/delete" onsubmit="return confirm('Delete?')">
+        <button class="px-3 py-2 bg-red-600 text-white rounded">Delete</button>
+      </form>
+    </div>
+  </div>
+  {{ else }}
+  <p>You have no products yet.</p>
+  {{ end }}
+</div>
+{{ end }}

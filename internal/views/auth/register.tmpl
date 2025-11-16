@@ -1,0 +1,17 @@
+{{ define "title" }}Register{{ end }}
+{{ template "base" . }}
+{{ define "content" }}
+<div class="min-h-[70vh] grid place-items-center bg-black text-white -mx-4 px-4 py-10">
+  <div class="w-full max-w-md bg-neutral-900 rounded-2xl p-8 shadow">
+    <div class="text-center text-3xl font-bold mb-6">Create account</div>
+    <form method="POST" class="space-y-3">
+      <input name="contact" required placeholder="Email или телефон" class="w-full border border-neutral-700 bg-neutral-800 p-3 rounded">
+      <input name="username" required placeholder="Имя пользователя" class="w-full border border-neutral-700 bg-neutral-800 p-3 rounded">
+      <input name="password" type="password" required placeholder="Пароль" class="w-full border border-neutral-700 bg-neutral-800 p-3 rounded">
+      <button class="w-full py-3 bg-indigo-600 text-white rounded font-semibold">Зарегистрироваться</button>
+    </form>
+    {{ if .Error }}<p class="text-red-400 mt-4 text-center">{{ .Error }}</p>{{ end }}
+  </div>
+</div>
+{{ end }}
+
